@@ -1,6 +1,12 @@
 # Activerecord::Crate::Adapter
 
-TODO: Write a gem description
+The [Crate](http://www.crate.io) adapter for ActiveRecord.
+
+## Work in progress
+
+I've just started coding the adapter and lots of functionality might still not work. Give it a try
+and help bei either contributing (fix it) or add a ne issue.
+
 
 ## Installation
 
@@ -18,12 +24,61 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+When using Rails update your database.yml
+
+     default: &default
+       adapter: crate
+       host: 127.0.0.1
+       port: 4200
+
+Crate doesn't come with an autoincrement feature for your model ids. So you need to set
+it yourself. One way is to use SecureRandom.uuid, if you think there is a better one,
+please add an issue so we can discuss.
+
+    class Post < ActiveRecord::Base
+
+      before_validation :set_id
+
+      private
+
+      def set_id
+        self.id = SecureRandom.uuid
+      end
+
+    end
+
+## Gotchas
+
+Crate is eventually consistent, that means if you create a record and query for it right away it
+won't work (except queries for the primary key!). Read more about it [here](https://github.com/crate/crate/blob/master/docs/sql/dml.txt#L569)
+
+Crate does not support Joins (yet) so joins won't work.
+
+## Tests
+
+First run the test instance of crate
+
+    $ ./spec/test_server.rb
+
+then run the tests
+
+    $ rspec spec
 
 ## Contributing
 
-1. Fork it ( http://github.com/<my-github-username>/activerecord-crate-adapter/fork )
+This adapter is a work in progress. If you think something is missing, either follow the steps below
+or log a new issue, so someone else can tackle it.
+
+1. Fork it ( `http://github.com/crate/activerecord-crate-adapter/fork` )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+4. Add tests
+5. Push to the branch (`git push origin my-new-feature`)
+6. Create new Pull Request
+
+##Maintainer
+
+* [Christoph Klocker](http://www.vedanova.com), [@corck](http://www.twitter.com/corck)
+
+##License
+MIT License. Copyright 2014 Christoph Klocker. [http://vedanova.com](http://vedanova.com)

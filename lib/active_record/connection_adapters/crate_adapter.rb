@@ -11,7 +11,6 @@ require 'active_record/connection_adapters/column'
 require 'active_record/connection_adapters/crate/schema_statements'
 require 'active_record/connection_adapters/crate/database_statements'
 require 'active_support/core_ext/kernel'
-require 'debugger'
 
 begin
   require 'crate_ruby'

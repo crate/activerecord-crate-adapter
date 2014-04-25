@@ -65,7 +65,7 @@ module ActiveRecord
 
       #TODO
       def supports_migrations?
-        true
+        false
       end
 
       # #TODO

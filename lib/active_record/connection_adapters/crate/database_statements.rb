@@ -41,6 +41,14 @@ module ActiveRecord
         sql
       end
 
+      # Executes an SQL statement, returning a ResultSet object on success
+      # or raising a CrateError exception otherwise.
+      def execute(sql, name = nil)
+        log(sql, name) do
+          @connection.execute(sql)
+        end
+      end
+
       protected
       def select(sql, name, binds)
         exec_query(sql, name, binds)

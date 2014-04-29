@@ -47,6 +47,18 @@ please add an issue so we can discuss.
 
     end
 
+## Migrations
+
+Currently adding and dropping indices is not support by Crate. Issue [#733](https://github.com/crate/crate/issues/733)
+
+    # not supported by Crate yet
+    add_index :posts, :comment_count
+    remove_index :posts, :comment_count
+
+## Missing functionality
+
+Array and Object column types are currently not supported in migrations.
+
 ## Gotchas
 
 Crate is eventually consistent, that means if you create a record and query for it right away it

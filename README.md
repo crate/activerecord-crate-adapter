@@ -26,7 +26,7 @@ Or install it yourself as:
 
 When using Rails update your database.yml
 
-     default: &default
+     development:
        adapter: crate
        host: 127.0.0.1
        port: 4200

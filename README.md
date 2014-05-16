@@ -12,7 +12,7 @@ and help bei either contributing (fix it) or add a ne issue.
 
 Add this line to your application's Gemfile:
 
-    gem 'activerecord-crate-adapter'
+    gem 'activerecord-crate-adapter', :git => "https://github.com/crate/activerecord-crate-adapter.git"
 
 And then execute:
 

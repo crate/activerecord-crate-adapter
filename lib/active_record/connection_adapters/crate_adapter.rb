@@ -10,7 +10,6 @@ require 'active_record/connection_adapters/statement_pool'
 require 'active_record/connection_adapters/column'
 require 'active_record/connection_adapters/crate/schema_statements'
 require 'active_record/connection_adapters/crate/database_statements'
-require 'active_record/connection_adapters/crate/table_definition'
 require 'active_support/core_ext/kernel'
 
 begin

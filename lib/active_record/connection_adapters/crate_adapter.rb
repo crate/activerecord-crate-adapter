@@ -96,9 +96,9 @@ module ActiveRecord
         @connection.tables
       end
 
-      def quote_column_name(name) #:nodoc:
-        @quoted_column_names[name] ||= %Q{"#{name.to_s}"}
-      end
+      # def quote_column_name(name) #:nodoc:
+      #   @quoted_column_names[name] ||= %Q{"#{name.to_s}"}
+      # end
 
       class CrateColumn < Column
       end

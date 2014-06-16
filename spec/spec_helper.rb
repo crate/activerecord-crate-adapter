@@ -32,3 +32,10 @@ def connect
   }
   ActiveRecord::Base.establish_connection :arunit
 end
+
+# Crate is eventually consistent therefore we need
+# to refresh the table when doing queries, except we
+# query for the primary key
+def refresh_posts
+  Post.connection.raw_connection.refresh_table('posts')
+end

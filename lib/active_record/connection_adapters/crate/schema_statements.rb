@@ -1,24 +1,20 @@
 module ActiveRecord
   module ConnectionAdapters
-   class CrateAdapter < AbstractAdapter
-     class SchemaCreation < AbstractAdapter::SchemaCreation
+    module Crate
+      class SchemaCreation < AbstractAdapter::SchemaCreation
 
-       def add_column_options!(sql, options)
-         if options[:array] || options[:column].try(:array)
-           sql << '[]'
-         end
+        private
 
-         column = options.fetch(:column) { return super }
-         if column.type == :uuid && options[:default] =~ /\(\)/
-           sql << " DEFAULT #{options[:default]}"
-         else
-           super
-         end
-       end
+        def add_column_options!(sql, options)
+          if options[:array] || options[:column].try(:array)
+            sql.gsub!(/(.*)\s(\w+)$/, '\1 array(\2)')
+          end
+          super(sql, options)
+        end
 
-     end
+      end
 
-     module SchemaStatements
+      module SchemaStatements
         def primary_key(table_name)
           res = @connection.execute("select constraint_name from information_schema.table_constraints
 where table_name = '#{quote_table_name(table_name)}' and constraint_type = 'PRIMARY_KEY'")
@@ -39,7 +35,7 @@ where table_name = '#{quote_table_name(table_name)}' and constraint_type = 'PRIM
           puts "See issue: https://github.com/crate/crate/issues/733"
           puts "#########"
           puts
-          end
+        end
 
         def remove_index(table_name, column_name, options = {}) #:nodoc:
           puts

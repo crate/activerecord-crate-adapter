@@ -5,7 +5,7 @@ The [Crate](http://www.crate.io) adapter for ActiveRecord.
 ## Work in progress
 
 I've just started coding the adapter and lots of functionality might still not work. Give it a try
-and help bei either contributing (fix it) or add a ne issue.
+and help bei either contributing (fix it) or add an issue.
 
 
 ## Installation
@@ -46,6 +46,20 @@ please add an issue so we can discuss.
       end
 
     end
+    
+## Special Data Types
+
+### Array
+You can simply create Array columns by passing "array: true" when you create a migration
+ 
+    t.string :tags, array: true
+    t.integer :votes, array: true
+    
+When you create an object just pass your Array directly
+
+    Post.create!(title: 'Arrays are awesome', tags: %w(hot fresh), votes: [1,2])
+    post = Post.where("'fresh' = ANY (tags)")    
+    
 
 ## Migrations
 

@@ -10,6 +10,7 @@ require 'active_record/connection_adapters/statement_pool'
 require 'active_record/connection_adapters/column'
 require 'active_record/connection_adapters/crate/schema_statements'
 require 'active_record/connection_adapters/crate/database_statements'
+require 'active_record/connection_adapters/crate/quoting'
 require 'active_support/core_ext/kernel'
 
 begin
@@ -29,10 +30,19 @@ module ActiveRecord
 
   module ConnectionAdapters
     class CrateAdapter < AbstractAdapter
-      include SchemaStatements
+      class ColumnDefinition < ActiveRecord::ConnectionAdapters::ColumnDefinition
+        attr_accessor :array
+      end
+
+      include Crate::SchemaStatements
       include DatabaseStatements
+      include Crate::Quoting
 
       ADAPTER_NAME = 'Crate'.freeze
+
+      def schema_creation # :nodoc:
+        Crate::SchemaCreation.new self
+      end
 
       NATIVE_DATABASE_TYPES = {
           boolean:     { name: "boolean" },
@@ -63,6 +73,20 @@ module ActiveRecord
       def adapter_name
         ADAPTER_NAME
       end
+
+      # Adds `:array` option to the default set provided by the
+      # AbstractAdapter
+      def prepare_column_options(column, types)
+        spec = super
+        spec[:array] = 'true' if column.respond_to?(:array) && column.array
+        spec
+      end
+
+      # Adds `:array` as a valid migration key
+      def migration_keys
+        super + [:array]
+      end
+
 
       #TODO check what call to use for active
       def active?
@@ -113,6 +137,20 @@ module ActiveRecord
           options[:primary_key] = true
           column name, "STRING PRIMARY KEY", options
         end
+
+        def column(name, type = nil, options = {})
+          super
+          column = self[name]
+          column.array = options[:array]
+          self
+        end
+
+        private
+
+        def create_column_definition(name, type)
+          ColumnDefinition.new name, type
+        end
+
 
       end
 

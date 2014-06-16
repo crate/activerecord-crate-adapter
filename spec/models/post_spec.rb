@@ -3,14 +3,19 @@ require_relative '../spec_helper'
 describe Post do
 
   before(:all) do
-    ActiveRecord::Base.connection.raw_connection
-    .create_table("posts", id: [:string, "primary key"],
-                  title: :string,
-                  views: :integer).should be_true
+    ActiveRecord::Migration.class_eval do
+      create_table :posts do |t|
+        t.string :title
+        t.integer :views
+      end
+    end
+    Post.reset_column_information
   end
 
   after(:all) do
-    ActiveRecord::Base.connection.raw_connection.drop_table("posts").should be_true
+    ActiveRecord::Migration.class_eval do
+      drop_table :posts
+    end
   end
 
   let(:params) { {title: "Crate rocks", views: 10000} }
@@ -29,7 +34,7 @@ describe Post do
     it 'should persist the record to the database' do
       post = Post.create!(params)
       post.persisted?.should be_true
-      refresh_table
+      refresh_posts
       Post.count.should eq 1
     end
 
@@ -53,7 +58,7 @@ describe Post do
     end
 
     after do
-      @post.destroy
+      #@post.destroy
     end
 
     context 'find' do
@@ -70,13 +75,6 @@ describe Post do
       end
 
     end
-  end
-
-  # Crate is eventually consistent therefore we need
-  # to refresh the table when doing queries, except we
-  # query for the primary key
-  def refresh_table
-    Post.connection.raw_connection.refresh_table('posts')
   end
 
 end

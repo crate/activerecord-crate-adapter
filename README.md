@@ -50,7 +50,8 @@ please add an issue so we can discuss.
 ## Special Data Types
 
 ### Array
-You can simply create Array columns by passing "array: true" when you create a migration
+You can simply create Array columns by passing "array: true" when you create a migration. You need at least the upcoming
+release 0.39 of Crate for this functionality.
  
     t.string :tags, array: true
     t.integer :votes, array: true

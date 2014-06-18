@@ -6,7 +6,8 @@ describe "User#object" do
     ActiveRecord::Migration.class_eval do
       create_table :users do |t|
         t.string :name
-        t.object :address
+        t.object :address, object_schema_behaviour: :strict,
+                 object_schema: {street: :string, city: :string, phones: {array: :string}, zip: :integer}
       end
     end
     User.reset_column_information
@@ -28,7 +29,7 @@ describe "User#object" do
       p.address.should be_a Address
       p.address.street.should eq address.street
       p.address.city.should eq address.city
-      p.address.zip.should eq address.zip.to_s # without a object schema numbers are converted to strings
+      p.address.zip.should eq address.zip # without a object schema numbers are converted to strings
     end
 
   end

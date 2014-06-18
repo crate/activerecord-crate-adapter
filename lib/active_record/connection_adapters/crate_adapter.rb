@@ -85,7 +85,7 @@ module ActiveRecord
 
       # Adds `:array` as a valid migration key
       def migration_keys
-        super + [:array]
+        super + [:array, :object_schema_behaviour, :object_schema_behaviour]
       end
 
 
@@ -147,14 +147,32 @@ module ActiveRecord
           self
         end
 
-        def object(name, type = nil, options = {})
-          column name, "object", options.merge(object: true)
+        def object(name, options = {})
+          schema_behaviour = options.delete(:object_schema_behaviour)
+          type = schema_behaviour ? "object(#{schema_behaviour})" : schema_behaviour
+          schema = options.delete(:object_schema)
+          type = "#{type} as (#{object_schema_to_string(schema)})" if schema
+
+          column name, type, options.merge(object: true)
         end
 
         private
 
         def create_column_definition(name, type)
           ColumnDefinition.new name, type
+        end
+
+        def object_schema_to_string(s)
+          ary = []
+          s.each_pair do |k, v|
+            if v.is_a?(Symbol)
+              ary << "#{k} #{v}"
+            elsif v.is_a?(Hash)
+              a = "array(#{v[:array]})"
+              ary << "#{k} #{a}"
+            end
+          end
+          ary.join(', ')
         end
 
 

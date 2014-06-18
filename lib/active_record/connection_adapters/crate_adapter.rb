@@ -1,5 +1,6 @@
 require 'active_record'
 require 'active_record/base'
+require 'active_record/base'
 require 'arel/arel_crate'
 require 'arel/visitors/bind_visitor'
 require 'active_support/dependencies/autoload'
@@ -31,7 +32,7 @@ module ActiveRecord
   module ConnectionAdapters
     class CrateAdapter < AbstractAdapter
       class ColumnDefinition < ActiveRecord::ConnectionAdapters::ColumnDefinition
-        attr_accessor :array
+        attr_accessor :array, :object
       end
 
       include Crate::SchemaStatements
@@ -111,7 +112,7 @@ module ActiveRecord
 
       def columns(table_name) #:nodoc:
         cols = @connection.table_structure(table_name).map do |field|
-          CrateColumn.new(field[2], nil, field[3], nil)
+          CrateColumn.new(field[2], nil, field[4], nil)
         end
         cols
       end
@@ -142,7 +143,12 @@ module ActiveRecord
           super
           column = self[name]
           column.array = options[:array]
+          column.object = options[:object]
           self
+        end
+
+        def object(name, type = nil, options = {})
+          column name, "object", options.merge(object: true)
         end
 
         private

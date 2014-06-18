@@ -8,11 +8,12 @@ module ActiveRecord
           # records are quoted as their primary key
           return value.quoted_id if value.respond_to?(:quoted_id)
 
-          case value
-            when Array
-              "#{value}".gsub('"', "'")
-            else
-              super(value, column)
+          if value.is_a?(Array)
+            "#{value}".gsub('"', "'")
+          elsif column.sql_type == 'object'
+            "{ #{value} }"
+          else
+            super(value, column)
           end
         end
       end

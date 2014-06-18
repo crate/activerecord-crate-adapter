@@ -4,7 +4,9 @@ require 'activerecord-crate-adapter'
 require 'logger'
 #require 'debugger'
 
+require 'dummy/app/models/address'
 require 'dummy/app/models/post'
+require 'dummy/app/models/user'
 
 RSpec.configure do |config|
 

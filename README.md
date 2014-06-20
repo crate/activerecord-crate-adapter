@@ -53,14 +53,59 @@ please add an issue so we can discuss.
 You can simply create Array columns by passing "array: true" when you create a migration. You need at least the upcoming
 release 0.39 of Crate for this functionality.
  
-    t.string :tags, array: true
-    t.integer :votes, array: true
+    t.array :tags, array_type: :string
+    t.array :votes, array_type: :integer
+    t.array :bool_arr, array_type: :boolean
     
 When you create an object just pass your Array directly
 
     Post.create!(title: 'Arrays are awesome', tags: %w(hot fresh), votes: [1,2])
     post = Post.where("'fresh' = ANY (tags)")    
+
+### Object
+Crate allows you to define nested objects. You need at least the upcoming
+release 0.39 of Crate for this functionality. I tried to make it as simply as possible to use and reuse existing AR functionality,
+I therefore ask you to reuse the existing serialize functionality. AR#serialize allows you to define your own serialization
+mechanism and we simply reuse that for serializing an AR object. To get serialize working simply create a #dump and #load method 
+on the class that creates a literal statement that is then used in the SQL. Read up more in this [commit}(https://github.com/crate/crate/commit/16a3d4b3f23996a327f91cdacef573f7ba946017).
+
+I tried to make your guys life easier and created a module that does this automatically for you. Simply make all attributes accessible
+and assign it in the initializer. So a serialized class should look like this:
+
+    require 'active_record/attribute_methods/crate_object'
     
+    class Address
+      attr_accessor :street, :city, :phones, :zip
+    
+      include CrateObject
+    
+      def initialize(opts)
+        @street = opts[:street]
+        @city = opts[:city]
+        @phones = opts[:phones]
+        @zip = opts[:zip]
+      end
+    
+    end
+
+Check out CrateObject module if you need to write your own serializer. 
+ 
+Then in your model simply use #serialize to have objects working
+
+      class User < ActiveRecord::Base        
+        serialize :address, Address  
+      end
+
+Note: I do not plan to support nested objects inside objects.
+
+#### Object Migrations
+
+In the migrations you can create an object and specify the object behaviour(strict|dynamic|ignored) and it's schema.
+    
+    t.object :address, object_schema_behaviour: :strict,
+                       object_schema: {street: :string, city: :string, phones: {array: :string}, zip: :integer}
+      
+   
 
 ## Migrations
 
@@ -70,9 +115,6 @@ Currently adding and dropping indices is not support by Crate. Issue [#733](http
     add_index :posts, :comment_count
     remove_index :posts, :comment_count
 
-## Missing functionality
-
-Array and Object column types are currently not supported in migrations.
 
 ## Gotchas
 

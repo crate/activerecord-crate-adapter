@@ -7,8 +7,9 @@ describe "Post#array" do
       create_table :posts do |t|
         t.string :title
         t.integer :comment_count
-        t.string :tags, array: true
-        t.integer :votes, array: true
+        t.array :tags, array_type: :string
+        t.array :votes, array_type: :integer
+        t.array :bool_arr, array_type: :boolean
       end
     end
     Post.reset_column_information
@@ -24,14 +25,17 @@ describe "Post#array" do
   describe "#array column type" do
     let(:array) {%w(hot fresh)}
     let(:votes) {[9,8,7]}
-    let(:post) {Post.create!(title: 'Arrays are awesome', tags: array, votes: votes)}
+    let(:bool_arr) {[true, false, true]}
+    let(:post) {Post.create!(title: 'Arrays are awesome', tags: array, votes: votes, bool_arr: bool_arr )}
 
     it 'should store and return an array' do
       p = Post.find(post.id)
       p.tags.should be_a Array
       p.votes.should be_a Array
+      p.bool_arr.should be_a Array
       p.tags.should eq array
       p.votes.should eq votes
+      p.bool_arr.should eq bool_arr
     end
 
     it 'should find the post by array value' do

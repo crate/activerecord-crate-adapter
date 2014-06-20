@@ -46,15 +46,15 @@ module ActiveRecord
       end
 
       NATIVE_DATABASE_TYPES = {
-          boolean:     { name: "boolean" },
-          string:      { name: "string"},
-          integer:     { name: "integer" },
-          float:       { name: "float" },
-          binary:      { name: "byte" },
-          datetime:    { name: "timestamp" },
-          timestamp:   { name: "timestamp" },
-          object:      { name: "object" },
-          array:       { name: "array"}
+          boolean: {name: "boolean"},
+          string: {name: "string"},
+          integer: {name: "integer"},
+          float: {name: "float"},
+          binary: {name: "byte"},
+          datetime: {name: "timestamp"},
+          timestamp: {name: "timestamp"},
+          object: {name: "object"},
+          array: {name: "array"}
       }
 
       class BindSubstitution < Arel::Visitors::Crate # :nodoc:
@@ -126,6 +126,18 @@ module ActiveRecord
       # end
 
       class CrateColumn < Column
+
+        def simplified_type(field_type)
+          case field_type
+            when /_array/i
+              :array
+            when /object/i
+              :object
+            else
+              super(field_type)
+          end
+        end
+
       end
 
       class TableDefinition < ActiveRecord::ConnectionAdapters::TableDefinition
@@ -154,6 +166,12 @@ module ActiveRecord
           type = "#{type} as (#{object_schema_to_string(schema)})" if schema
 
           column name, type, options.merge(object: true)
+        end
+
+        def array(name, options = {})
+          array_type = options.delete(:array_type)
+          raise "Array columns must specify an :array_type (e.g. array_type: :string)" unless array_type.present?
+          column name, "array(#{array_type})", options.merge(array: true)
         end
 
         private

@@ -20,7 +20,7 @@ describe "User#object" do
   end
 
 
-  describe "#array column type" do
+  describe "#object column type" do
     let(:address) {Address.new(street: '1010 W 2nd Ave', city: 'Vancouver', phones: ["123", "987"], zip: 6888)}
     let(:user) {@user = User.create!(name: 'Mad Max', address: address)}
 
@@ -30,6 +30,7 @@ describe "User#object" do
       p.address.street.should eq address.street
       p.address.city.should eq address.city
       p.address.zip.should eq address.zip # without a object schema numbers are converted to strings
+      p.address.phones.should eq address.phones
     end
 
   end

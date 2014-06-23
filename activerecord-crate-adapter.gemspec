@@ -8,13 +8,13 @@ Gem::Specification.new do |spec|
   spec.version       = ActiverecordCrateAdapter::VERSION
   spec.authors       = ["Christoph Klocker"]
   spec.email         = ["christoph@vedanova.com"]
-  spec.summary       = "Active Record Crate Data Adapter"
-  #spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.summary       = "ActiveRecord Crate Data Adapter"
+  spec.description   = "ActiveRecord adapter for Crate, a shared-nothing, fully searchable, document-oriented cluster data store."
+  spec.homepage      = "https://crate.io"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
-  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  #spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 

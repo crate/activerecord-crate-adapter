@@ -1,11 +1,7 @@
-# Activerecord::Crate::Adapter
+[![Gem Version](https://badge.fury.io/rb/activerecord-crate-adapter.svg)](http://badge.fury.io/rb/activerecord-crate-adapter)
 
 The [Crate](http://www.crate.io) adapter for ActiveRecord.
 
-## Work in progress
-
-I've just started coding the adapter and lots of functionality might still not work. Give it a try
-and help bei either contributing (fix it) or add an issue.
 
 
 ## Installation

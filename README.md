@@ -8,7 +8,7 @@ The [Crate](http://www.crate.io) adapter for ActiveRecord.
 
 Add this line to your application's Gemfile:
 
-    gem 'activerecord-crate-adapter', :git => "https://github.com/crate/activerecord-crate-adapter.git"
+    gem 'activerecord-crate-adapter'
 
 And then execute:
 
@@ -33,7 +33,7 @@ please add an issue so we can discuss.
 
     class Post < ActiveRecord::Base
 
-      before_validation :set_id
+      before_validation :set_id, on: :create
 
       private
 

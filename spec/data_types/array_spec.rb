@@ -44,6 +44,18 @@ describe "Post#array" do
       Post.where("'fresh' = ANY (tags)").should include(post)
     end
 
+    context '#update' do
+      it 'should update and existing array value' do
+        post = Post.create!(title: 'Arrays are awesome', tags: array, votes: votes)
+        refresh_posts
+        new_tags = %w(ok)
+        post.update_attributes!(tags: new_tags)
+        refresh_posts
+        post.reload
+        post.tags.should eq new_tags
+      end
+    end
+
   end
 
 end

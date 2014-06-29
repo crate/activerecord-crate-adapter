@@ -12,19 +12,17 @@ module CrateObject
     end
 
     def dump(object)
-      object ? object.to_literals : nil
+      object ? object.to_hash : nil
     end
   end
 
 
-  def to_literals
-    arr = []
+  def to_hash
+    h = {}
     instance_variables.each do |var|
-      v = instance_variable_get(var)
-      value = v.is_a?(Array) ? v : %Q{"#{v}"}
-      arr << %Q{"#{var.to_s.gsub(/@/, '')}"=#{value}}
+      h.merge!({"#{var.to_s.gsub(/@/, '')}" => instance_variable_get(var)})
     end
-    arr.join(', ')
+    h
   end
 end
 

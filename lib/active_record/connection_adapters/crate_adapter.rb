@@ -11,7 +11,6 @@ require 'active_record/connection_adapters/statement_pool'
 require 'active_record/connection_adapters/column'
 require 'active_record/connection_adapters/crate/schema_statements'
 require 'active_record/connection_adapters/crate/database_statements'
-require 'active_record/connection_adapters/crate/quoting'
 require 'active_support/core_ext/kernel'
 
 begin
@@ -37,7 +36,6 @@ module ActiveRecord
 
       include Crate::SchemaStatements
       include DatabaseStatements
-      include Crate::Quoting
 
       ADAPTER_NAME = 'Crate'.freeze
 
@@ -85,7 +83,7 @@ module ActiveRecord
 
       # Adds `:array` as a valid migration key
       def migration_keys
-        super + [:array, :object_schema_behaviour, :object_schema_behaviour]
+        super + [:array, :object_schema_behaviour, :object_schema]
       end
 
 

@@ -26,13 +26,17 @@ module ActiveRecord
         params = []
         binds.each_with_index do |(column, value), index|
           ar_column = column.is_a?(ActiveRecord::ConnectionAdapters::Column)
-          next if ar_column && column.sql_type == 'timestamp'
+          # only quote where clause values
+          unless ar_column # && column.sql_type == 'timestamp'
           v = value
           quoted_value = ar_column ? quote(v, column) : quote(v, nil)
           params << quoted_value
+          else
+            params << value
+          end
+
         end
-        params.each { |p| sql.sub!(/(\?)/, p) }
-        @connection.execute sql
+        @connection.execute sql, params
       end
 
       # Returns the statement identifier for the client side cache

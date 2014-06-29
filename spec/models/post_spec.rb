@@ -31,9 +31,16 @@ describe Post do
 
   context 'persistance' do
 
+    before do
+      @post = Post.create!(params)
+    end
+
+    after do
+      @post.destroy
+    end
+
     it 'should persist the record to the database' do
-      post = Post.create!(params)
-      post.persisted?.should be_true
+      @post.persisted?.should be_true
       refresh_posts
       Post.count.should eq 1
     end
@@ -58,12 +65,19 @@ describe Post do
     end
 
     after do
-      #@post.destroy
+      @post.destroy
     end
 
     context 'find' do
       it 'should find the crated record' do
         post = Post.where(id: @post.id).first
+        post.id.should eq(@post.id)
+      end
+
+      it 'should find the crated record by title' do
+        refresh_posts
+        Post.where(title: @post.title).count.should eq 1
+        post = Post.where(title: @post.title).first
         post.id.should eq(@post.id)
       end
     end

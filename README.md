@@ -46,8 +46,7 @@ please add an issue so we can discuss.
 ## Special Data Types
 
 ### Array
-You can simply create Array columns by specifying t.array and passing array_type when you create a migration. You need at least the upcoming
-release 0.39 of Crate for this functionality.
+You can simply create Array columns by specifying t.array and passing array_type when you create a migration.
  
     t.array :tags, array_type: :string
     t.array :votes, array_type: :integer
@@ -59,8 +58,7 @@ When you create an object just pass your Array directly
     post = Post.where("'fresh' = ANY (tags)")    
 
 ### Object
-Crate allows you to define nested objects. You need at least the upcoming
-release 0.39 of Crate for this functionality. I tried to make it as simply as possible to use and reuse existing AR functionality,
+Crate allows you to define nested objects. I tried to make it as simply as possible to use and reuse existing AR functionality,
 I therefore ask you to reuse the existing serialize functionality. AR#serialize allows you to define your own serialization
 mechanism and we simply reuse that for serializing an AR object. To get serialize working simply create a #dump and #load method 
 on the class that creates a literal statement that is then used in the SQL. Read up more in this [commit}(https://github.com/crate/crate/commit/16a3d4b3f23996a327f91cdacef573f7ba946017).

@@ -11,7 +11,7 @@ rvm:
 before_script:
   - wget https://cdn.crate.io/downloads/releases/crate-0.39.0.tar.gz -O /tmp/crate.tar.gz
   - tar -xvf /tmp/crate.tar.gz
-  - nohup bundle exec ruby spec/test_server.rb $PWD/crate-0.39.0/ 4209 &> /dev/null &
+  - bundle exec ruby spec/travis_test_server.rb $PWD/crate-0.39.0/ 4209
 
 script: bundle exec rspec spec
 

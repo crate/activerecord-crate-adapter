@@ -7,14 +7,15 @@ class TestServer
   NAME = "TestCluster"
 
 
-  def initialize(crate_home = nil, port = nil, host = "127.0.0.1")
-    @crate_home = crate_home || CRATE_PATH
-    @port = port || TEST_PORT
-    @host = host
+  def initialize(crate_home = nil, port = nil)
+    @crate_home = crate_home
+    @port = port
+    @host = "127.0.0.1"
   end
 
   def start
     cmd = "sh #{CRATE_PATH}/bin/crate #{start_params}"
+    puts cmd
     @pid = spawn(cmd, :out => "/tmp/crate_test_server.out", :err => "/tmp/crate_test_server.err")
     Process.detach(@pid)
     puts 'starting'

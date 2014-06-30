@@ -16,9 +16,9 @@ module ActiveRecord
           ar_column = column.is_a?(ActiveRecord::ConnectionAdapters::Column)
           # only quote where clause values
           unless ar_column # && column.sql_type == 'timestamp'
-          v = value
-          quoted_value = ar_column ? quote(v, column) : quote(v, nil)
-          params << quoted_value
+            v = value
+            quoted_value = ar_column ? quote(v, column) : quote(v, nil)
+            params << quoted_value
           else
             params << value
           end

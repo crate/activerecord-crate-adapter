@@ -95,11 +95,10 @@ describe Post do
 
     before do
       @post = Post.create!(params)
-      Post.create!(params)
     end
 
     after do
-      Post.destroy_all
+      @post.destroy
     end
 
     it 'should not return all records but sanitize string' do
@@ -107,9 +106,10 @@ describe Post do
       sql.should match(/'#{@post.id} or 1=1'/)
     end
 
-    it 'should not return all records but sanitize string' do
-      sql = Post.where(id: "#{@post.title}; DROP TABLE POST").to_sql
-      sql.should match(/'#{@post.title}; DROP TABLE POST'/)
+    it 'should not drop the table but sanitize string' do
+      Post.where(id: "#{@post.title}; DROP TABLE POST")
+      refresh_posts
+      Post.last.id.should eq @post.id
     end
 
   end

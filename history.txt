@@ -1,5 +1,8 @@
 # coding: UTF-8
 
+=== 0.0.2
+  * Switched query execution to parameter substitution
+
 === 0.0.1
 
 Initial Release

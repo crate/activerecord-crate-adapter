@@ -62,7 +62,8 @@ class TestServer
 
 end
 
-server = TestServer.new.start *ARGV
+server = TestServer.new *ARGV
+server.start
 
 trap("INT") do
   puts "Script terminated by user."

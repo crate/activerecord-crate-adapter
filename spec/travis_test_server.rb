@@ -14,8 +14,7 @@ class TestServer
   end
 
   def start
-    cmd = "sh #{CRATE_PATH}/bin/crate #{start_params}"
-    puts cmd
+    cmd = "sh #{File.join(@crate_home, 'bin/crate')} #{start_params}"
     @pid = spawn(cmd, :out => "/tmp/crate_test_server.out", :err => "/tmp/crate_test_server.err")
     Process.detach(@pid)
     puts 'starting'

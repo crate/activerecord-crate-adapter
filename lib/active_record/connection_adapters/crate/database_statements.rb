@@ -10,18 +10,6 @@ module ActiveRecord
         ActiveRecord::Result.new(fields, result.values)
       end
 
-      # Converts an arel AST to SQL
-      def to_sql(arel, binds = [])
-        if arel.respond_to?(:ast)
-          binds = binds.dup
-          visitor.accept(arel.ast) do
-            quote(*binds.shift.reverse)
-          end
-        else
-          arel
-        end
-      end
-
       def do_exec_query(sql, name, binds)
         params = []
         binds.each_with_index do |(column, value), index|

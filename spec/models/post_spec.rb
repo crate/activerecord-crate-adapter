@@ -91,5 +91,28 @@ describe Post do
     end
   end
 
+  describe 'sql input sanitization' do
+
+    before do
+      @post = Post.create!(params)
+      Post.create!(params)
+    end
+
+    after do
+      Post.destroy_all
+    end
+
+    it 'should not return all records but sanitize string' do
+      sql = Post.where(id: "#{@post.id} or 1=1").to_sql
+      sql.should match(/'#{@post.id} or 1=1'/)
+    end
+
+    it 'should not return all records but sanitize string' do
+      sql = Post.where(id: "#{@post.title}; DROP TABLE POST").to_sql
+      sql.should match(/'#{@post.title}; DROP TABLE POST'/)
+    end
+
+  end
+
 end
 

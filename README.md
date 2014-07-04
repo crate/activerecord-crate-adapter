@@ -131,7 +131,7 @@ then run the tests
 
 ## Contributing
 
-This adapter is a work in progress. If you think something is missing, either follow the steps below
+If you think something is missing, either follow the steps below
 or log a new issue, so someone else can tackle it.
 
 1. Fork it ( `http://github.com/crate/activerecord-crate-adapter/fork` )

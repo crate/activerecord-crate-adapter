@@ -145,5 +145,5 @@ or log a new issue, so someone else can tackle it.
 
 * [Christoph Klocker](http://www.vedanova.com), [@corck](http://www.twitter.com/corck)
 
-##License
-MIT License. Copyright 2014 Christoph Klocker. [http://vedanova.com](http://vedanova.com)
+##License & Copyright
+See LICENSE for details.

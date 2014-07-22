@@ -131,18 +131,13 @@ then run the tests
 
 ## Contributing
 
-If you think something is missing, either follow the steps below
+If you think something is missing, either create a pull request
 or log a new issue, so someone else can tackle it.
-
-1. Fork it ( `http://github.com/crate/activerecord-crate-adapter/fork` )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Add tests
-5. Push to the branch (`git push origin my-new-feature`)
-6. Create new Pull Request
+Please refer to CONTRIBUTING.rst for further information.
 
 ##Maintainer
 
+* [CRATE Technology GmbH](http://crate.io)
 * [Christoph Klocker](http://www.vedanova.com), [@corck](http://www.twitter.com/corck)
 
 ##License & Copyright

@@ -44,6 +44,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency('activerecord', '>= 4.0.0')
   spec.add_dependency('arel', '>= 4.0.0')
-  spec.add_dependency('crate_ruby', '~> 0.0.5')
+  spec.add_dependency('crate_ruby', '~> 0.0.6')
 
 end

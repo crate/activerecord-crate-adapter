@@ -131,9 +131,14 @@ module ActiveRecord
 
       def columns(table_name) #:nodoc:
         cols = @connection.table_structure(table_name).map do |field|
-          CrateColumn.new(field[2], nil, field[4], nil)
+          name = dotted_name(field[2])
+          CrateColumn.new(name, nil, field[4], nil)
         end
         cols
+      end
+
+      def dotted_name(name)
+        name.gsub(%r(\[['"]), '.').delete(%{'"]})
       end
 
       def tables

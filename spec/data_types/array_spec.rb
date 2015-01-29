@@ -33,6 +33,7 @@ describe "Post#array" do
         t.array :bool_arr, array_type: :boolean
       end
     end
+    ensure_status('yellow')
     Post.reset_column_information
   end
 

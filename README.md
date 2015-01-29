@@ -8,6 +8,8 @@ The [Crate](http://www.crate.io) adapter for ActiveRecord.
 
 ## Installation
 
+**Note:** `activerecord-crate-adapter` currently only works with Rails 4.1.x
+
 Add this line to your application's Gemfile:
 
     gem 'activerecord-crate-adapter'
@@ -44,20 +46,20 @@ please add an issue so we can discuss.
       end
 
     end
-    
+
 ## Special Data Types
 
 ### Array
 You can simply create Array columns by specifying t.array and passing array_type when you create a migration.
- 
+
     t.array :tags, array_type: :string
     t.array :votes, array_type: :integer
     t.array :bool_arr, array_type: :boolean
-    
+
 When you create an object just pass your Array directly
 
     Post.create!(title: 'Arrays are awesome', tags: %w(hot fresh), votes: [1,2])
-    post = Post.where("'fresh' = ANY (tags)")    
+    post = Post.where("'fresh' = ANY (tags)")
 
 ### Object
 Crate allows you to define nested objects. I tried to make it as simply as possible to use and reuse existing AR functionality,
@@ -69,27 +71,27 @@ I tried to make your guys life easier and created a module that does this automa
 and assign it in the initializer. So a serialized class should look like this:
 
     require 'active_record/attribute_methods/crate_object'
-    
+
     class Address
       attr_accessor :street, :city, :phones, :zip
-    
+
       include CrateObject
-    
+
       def initialize(opts)
         @street = opts[:street]
         @city = opts[:city]
         @phones = opts[:phones]
         @zip = opts[:zip]
       end
-    
+
     end
 
-Check out CrateObject module if you need to write your own serializer. 
- 
+Check out CrateObject module if you need to write your own serializer.
+
 Then in your model simply use #serialize to have objects working
 
-      class User < ActiveRecord::Base        
-        serialize :address, Address  
+      class User < ActiveRecord::Base
+        serialize :address, Address
       end
 
 Note: I do not plan to support nested objects inside objects.
@@ -97,11 +99,11 @@ Note: I do not plan to support nested objects inside objects.
 #### Object Migrations
 
 In the migrations you can create an object and specify the object behaviour(strict|dynamic|ignored) and it's schema.
-    
+
     t.object :address, object_schema_behaviour: :strict,
                        object_schema: {street: :string, city: :string, phones: {array: :string}, zip: :integer}
-      
-   
+
+
 
 ## Migrations
 
@@ -121,13 +123,14 @@ Crate does not support Joins (yet) so joins won't work.
 
 ## Tests
 
-First run the test instance of crate
+Start up the crate server before running the tests
 
-    $ ./spec/test_server.rb
+    ruby spec/test_server.rb /path/to/crate
 
-then run the tests
+Then run tests with
 
-    $ rspec spec
+    bundle exec rspec spec
+
 
 ## Contributing
 
@@ -141,4 +144,5 @@ Please refer to CONTRIBUTING.rst for further information.
 * [Christoph Klocker](http://www.vedanova.com), [@corck](http://www.twitter.com/corck)
 
 ##License & Copyright
-See LICENSE for details.
+
+see LICENSE for details.

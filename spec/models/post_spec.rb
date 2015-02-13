@@ -30,6 +30,7 @@ describe Post do
         t.integer :views
       end
     end
+    ensure_status('yellow')
     Post.reset_column_information
   end
 
@@ -61,7 +62,7 @@ describe Post do
     end
 
     it 'should persist the record to the database' do
-      @post.persisted?.should be_true
+      @post.persisted?.should eq true
       refresh_posts
       Post.count.should eq 1
     end

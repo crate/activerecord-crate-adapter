@@ -29,6 +29,9 @@ require 'dummy/app/models/address'
 require 'dummy/app/models/post'
 require 'dummy/app/models/user'
 
+HOST = "127.0.0.1"
+PORT = 44200
+
 RSpec.configure do |config|
 
   config.before(:each) do
@@ -49,8 +52,8 @@ def connect
       'arunit' => {
           adapter: 'crate',
           min_messages: 'warning',
-          port: 4209,
-          host: '127.0.0.1'
+          host: HOST,
+          port: PORT,
       }
   }
   ActiveRecord::Base.establish_connection :arunit
@@ -62,3 +65,15 @@ end
 def refresh_posts
   Post.connection.raw_connection.refresh_table('posts')
 end
+
+# Wait till all table is synced to all shards
+# this should be used after each create_table to prevent flaky tests
+def ensure_status(expected_status)
+  req = Net::HTTP::Get.new("/_cluster/health?wait_for_status=#{expected_status}&timeout=10s")
+  resp = Net::HTTP.new(HOST, PORT)
+  response = resp.start { |http| http.request(req) }
+  actual_status = JSON.parse(response.body)['status']
+  raise WrongStatusError, "expected status #{expected_status}, got #{actual_status}" if actual_status != expected_status
+end
+
+class WrongStatusError < StandardError; end

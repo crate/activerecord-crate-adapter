@@ -31,6 +31,7 @@ describe "User#object" do
                  object_schema: {street: :string, city: :string, phones: {array: :string}, zip: :integer}
       end
     end
+    ensure_status('yellow')
     User.reset_column_information
   end
 

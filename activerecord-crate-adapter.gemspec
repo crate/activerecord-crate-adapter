@@ -28,8 +28,8 @@ Gem::Specification.new do |spec|
   spec.version       = ActiverecordCrateAdapter::VERSION
   spec.authors       = ["Christoph Klocker", "CRATE Technology GmbH"]
   spec.email         = ["office@crate.io"]
-  spec.summary       = "ActiveRecord Crate Data Adapter"
-  spec.description   = "ActiveRecord adapter for Crate Data, a shared-nothing, fully searchable, document-oriented cluster data store."
+  spec.summary       = "ActiveRecord adapter for Crate"
+  spec.description   = "ActiveRecord adapter for Crate, the distributed database for Docker."
   spec.homepage      = "https://crate.io"
   spec.license       = "Apache License, v2.0"
 

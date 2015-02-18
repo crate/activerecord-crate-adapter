@@ -20,5 +20,5 @@
 # software solely pursuant to the terms of the relevant commercial agreement.
 
 module ActiverecordCrateAdapter
-  VERSION = "0.0.3"
+  VERSION = "0.0.4"
 end

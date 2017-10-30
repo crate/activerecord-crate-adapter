@@ -30,7 +30,7 @@ describe Post do
         t.integer :views
       end
     end
-    ensure_status('yellow')
+
     Post.reset_column_information
   end
 

@@ -39,14 +39,16 @@ RSpec.configure do |config|
   end
   config.after(:each) do
   end
-  config.before(:all) do
+  config.before(:suite) do
     @cluster = TestCluster.new(1, PORT)
     @cluster.start_nodes
-  end
-  config.before(:suite) do
     connect
   end
-  config.after(:all) do
+  config.after(:suite) do
+    pid_file = File.join(__dir__, 'support/testnode.pid')
+    pid = File.read(pid_file)
+    File.delete(pid_file)
+    Process.kill('HUP', pid.to_i)
     @cluster.stop_nodes
   end
 end

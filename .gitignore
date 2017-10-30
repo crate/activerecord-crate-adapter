@@ -21,3 +21,4 @@ crate_test_server*
 *.log
 log/*
 parts/
+.byebug_history

@@ -66,9 +66,11 @@ class TestServer
 
   def start
     cmd = "sh #{@crate_bin} #{start_params}"
-    @pid = spawn(cmd)
+    pid = spawn(cmd)
     wait_for
-    Process.detach(@pid)
+    Process.detach(pid)
+
+    File.write(__dir__ + "/testnode.pid", pid)
   end
 
   def wait_for

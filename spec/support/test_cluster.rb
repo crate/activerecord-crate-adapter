@@ -22,53 +22,87 @@
 
 require 'net/http'
 
-class TestServer
-  NAME = "TestCluster"
-  HOST = "127.0.0.1"
-  PORT = 44200
-  TIMEOUT = 30
+class TestCluster
 
-  def initialize(crate_home = '~/crate', run_in_background = false)
-    @crate_home = crate_home
-    @run_in_background = run_in_background
+  def initialize(num_nodes = 1, http_port=44200)
+    @nodes = []
+    idx = 0
+    while idx < num_nodes do
+      name = "crate#{idx-1}"
+      port = http_port + idx
+      @nodes << TestServer.new(name, port)
+      idx += 1
+    end
+  end
+
+  def start_nodes
+    @nodes.each do |node|
+      node.start
+    end
+  end
+
+  def stop_nodes
+    @nodes.each do |node|
+      node.stop
+    end
+  end
+
+end
+
+class TestServer
+
+  STARTUP_TIMEOUT = 30
+
+  def initialize(name, http_port)
+    @node_name = name
+    @http_port = http_port
+
+    @crate_bin = File.join('parts', 'crate', 'bin', 'crate')
+    if !File.file?(@crate_bin)
+      puts "Crate is not available. Please run 'bundle exec ruby spec/bootstrap.rb' first."
+      exit 1
+    end
   end
 
   def start
-    cmd = "sh #{File.join(@crate_home, 'bin', 'crate')} #{start_params}"
-    @pid = spawn(cmd, out: "/tmp/crate_test_server.out",
-                 err: "/tmp/crate_test_server.err")
+    cmd = "sh #{@crate_bin} #{start_params}"
+    @pid = spawn(cmd)
+    wait_for
     Process.detach(@pid)
-    puts 'Starting Crate... (this will take a few seconds)'
+  end
+
+  def wait_for
     time_slept = 0
-    interval = 2
+    interval = 1
     while true
-      if !alive? and time_slept > TIMEOUT
-        puts "Crate hasn't started for #{TIMEOUT} seconds. Giving up now..."
-        exit
+      if !alive? and time_slept > STARTUP_TIMEOUT
+        puts "Crate hasn't started for #{STARTUP_TIMEOUT} seconds. Giving up now..."
+        exit 1
       end
-      if alive? and @run_in_background
-        exit
+      if alive?
+        break
+      else
+        sleep(interval)
+        time_slept += interval
       end
-      sleep(interval)
-      time_slept += interval
     end
+  end
+
+  def stop
+    Process.kill('HUP', @pid)
   end
 
   private
 
   def start_params
-    "-Des.index.storage.type=memory " +
-        "-Des.node.name=#{NAME} " +
-        "-Des.cluster.name=Testing#{PORT} " +
-        "-Des.http.port=#{PORT}-#{PORT} " +
-        "-Des.network.host=localhost " +
-        "-Des.discovery.zen.ping.multicast.enabled=false " +
-        "-Des.es.api.enabled=true"
+    "-Cnode.name=#{@node_name} " +
+      "-Chttp.port=#{@http_port} " +
+      "-Cnetwork.host=localhost "
   end
 
   def alive?
     req = Net::HTTP::Get.new('/')
-    resp = Net::HTTP.new(HOST, PORT)
+    resp = Net::HTTP.new('localhost', @http_port)
     begin
       response = resp.start { |http| http.request(req) }
       response.code == "200" ? true : false
@@ -77,6 +111,3 @@ class TestServer
     end
   end
 end
-
-server = TestServer.new(*ARGV)
-server.start

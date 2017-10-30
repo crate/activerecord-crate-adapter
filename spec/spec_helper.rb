@@ -21,6 +21,7 @@
 
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
+require_relative 'support/test_cluster'
 require 'activerecord-crate-adapter'
 require 'logger'
 #require 'debugger'
@@ -38,10 +39,15 @@ RSpec.configure do |config|
   end
   config.after(:each) do
   end
+  config.before(:all) do
+    @cluster = TestCluster.new(1, PORT)
+    @cluster.start_nodes
+  end
   config.before(:suite) do
     connect
   end
   config.after(:all) do
+    @cluster.stop_nodes
   end
 end
 

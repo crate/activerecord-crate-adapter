@@ -20,3 +20,4 @@ tmp
 crate_test_server*
 *.log
 log/*
+parts/

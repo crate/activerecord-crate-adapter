@@ -130,10 +130,15 @@ module ActiveRecord
       end
 
       def columns(table_name) #:nodoc:
-        cols = @connection.table_structure(table_name).map do |field|
-          name = dotted_name(field[2])
-          CrateColumn.new(name, nil, field[4], nil)
+        table_structure = @connection.table_structure(table_name)
+        i_col_name = table_structure.cols.index('column_name')
+        i_data_type = table_structure.cols.index('data_type')
+
+        cols = table_structure.map do |field|
+          name = dotted_name(field[i_col_name])
+          CrateColumn.new(name, nil, field[i_data_type], nil)
         end
+
         cols
       end
 

@@ -24,7 +24,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 require_relative 'support/test_cluster'
 require 'activerecord-crate-adapter'
 require 'logger'
-#require 'debugger'
+
 
 require 'dummy/app/models/address'
 require 'dummy/app/models/post'

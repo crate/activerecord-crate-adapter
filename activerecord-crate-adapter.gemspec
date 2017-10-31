@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
   spec.summary       = "ActiveRecord adapter for Crate"
   spec.description   = "ActiveRecord adapter for Crate, the distributed database for Docker."
   spec.homepage      = "https://crate.io"
-  spec.license       = "Apache License, v2.0"
+  spec.license       = "Apache-2.0"
 
   spec.files         = `git ls-files -z`.split("\x0")
   #spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }

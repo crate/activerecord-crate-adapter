@@ -49,7 +49,6 @@ RSpec.configure do |config|
     pid = File.read(pid_file)
     File.delete(pid_file)
     Process.kill('HUP', pid.to_i)
-    @cluster.stop_nodes
   end
 end
 

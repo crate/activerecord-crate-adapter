@@ -38,6 +38,12 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
+  spec.metadata = {
+    "bug_tracker_uri" => "https://github.com/crate/activerecord-crate-adapter/issues",
+    "changelog_uri"   => "https://github.com/crate/activerecord-crate-adapter/blob/master/history.txt",
+    "source_code_uri" => "https://github.com/crate/activerecord-crate-adapter"
+  }
+
   spec.add_development_dependency "bundler", "~> 1.5"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec", "~> 2.14"

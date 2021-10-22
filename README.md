@@ -145,4 +145,4 @@ Please refer to CONTRIBUTING.rst for further information.
 
 ## License & Copyright
 
-see LICENSE for details.
+[Apache License 2.0](https://github.com/crate/activerecord-crate-adapter/blob/master/LICENSE)

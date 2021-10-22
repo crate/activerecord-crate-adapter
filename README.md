@@ -64,7 +64,7 @@ When you create an object just pass your Array directly
 ### Object
 Crate allows you to define nested objects. I tried to make it as simply as possible to use and reuse existing AR functionality,
 I therefore ask you to reuse the existing serialize functionality. AR#serialize allows you to define your own serialization
-mechanism and we simply reuse that for serializing an AR object. To get serialize working simply create a #dump and #load method 
+mechanism and we simply reuse that for serializing an AR object. To get serialize working simply create a #dump and #load method
 on the class that creates a literal statement that is then used in the SQL. Read up more in this [commit}(https://github.com/crate/crate/commit/16a3d4b3f23996a327f91cdacef573f7ba946017).
 
 I tried to make your guys life easier and created a module that does this automatically for you. Simply make all attributes accessible
@@ -145,4 +145,4 @@ Please refer to CONTRIBUTING.rst for further information.
 
 ##License & Copyright
 
-see LICENSE for details.
+[Apache License 2.0](https://github.com/crate/activerecord-crate-adapter/blob/master/LICENSE)

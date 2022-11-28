@@ -21,7 +21,6 @@
 
 require 'active_record'
 require 'active_record/base'
-require 'active_record/base'
 require 'arel/arel_crate'
 require 'arel/visitors/visitor'
 require 'active_support/dependencies/autoload'
@@ -126,14 +125,18 @@ module ActiveRecord
         true
       end
 
+      def supports_datetime_with_precision?
+        true
+      end
+
       def connect
         @connection = CrateRuby::Client.new(["#{@host}:#{@port}"])
 
         # Monkeypatch to make the client instance provide `supports_datetime_with_precision`.
-        # FIXME: Implement within `CrateRuby::Client`.
+        # FIXME: Implement within `CrateRuby::Client`?
+        @adapter_supports_datetime_with_precision = supports_datetime_with_precision?
         def @connection.supports_datetime_with_precision?
-          # TODO: Should it be `true` instead?
-          return false
+          return @adapter_supports_datetime_with_precision
         end
 
       end

@@ -22,7 +22,7 @@
 module ActiveRecord
   module ConnectionAdapters
     module Crate
-      class SchemaCreation < AbstractAdapter::SchemaCreation
+      class SchemaCreation < ActiveRecord::SchemaMigration
 
         private
 

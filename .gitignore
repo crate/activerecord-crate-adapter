@@ -21,3 +21,5 @@ tmp
 crate_test_server*
 *.log
 log/*
+crate-*.tar.gz
+parts/

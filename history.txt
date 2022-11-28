@@ -2,6 +2,8 @@
 
 === unreleased
 
+  * Updated to ActiveRecord 7 and crate_ruby 0.2
+
 === 0.0.4
 
   * Updated crate version to 0.45.7

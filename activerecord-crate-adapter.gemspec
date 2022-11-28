@@ -48,7 +48,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec", "~> 2.14"
 
-  spec.add_dependency('activerecord', '~> 4.1.0')
+  spec.add_dependency('activerecord', '~> 7')
   spec.add_dependency('arel', '>= 5.0.0')
   spec.add_dependency('crate_ruby', '~> 0.2.0')
 end

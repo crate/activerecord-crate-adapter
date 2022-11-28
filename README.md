@@ -123,13 +123,7 @@ Crate does not support Joins (yet) so joins won't work.
 
 ## Tests
 
-Start up the crate server before running the tests
-
-    ruby spec/test_server.rb /path/to/crate
-
-Then run tests with
-
-    bundle exec rspec spec
+See [DEVELOP.md](DEVELOP.md).
 
 
 ## Contributing

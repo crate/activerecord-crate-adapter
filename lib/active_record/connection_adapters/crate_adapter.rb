@@ -59,10 +59,9 @@ module ActiveRecord
 
       ADAPTER_NAME = 'Crate'.freeze
 
-      # TODO: Croaks with `NotImplementedError`.
-      # def schema_creation # :nodoc:
-      #   Crate::SchemaCreation.new self
-      # end
+      def schema_creation # :nodoc:
+         Crate::SchemaCreation.new self
+      end
 
       NATIVE_DATABASE_TYPES = {
           boolean: {name: "boolean"},

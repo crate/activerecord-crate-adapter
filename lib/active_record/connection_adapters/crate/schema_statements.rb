@@ -22,8 +22,7 @@
 module ActiveRecord
   module ConnectionAdapters
     module Crate
-      class SchemaCreation < ActiveRecord::SchemaMigration
-
+      class SchemaCreation < ActiveRecord::ConnectionAdapters::SchemaCreation
         private
 
         def add_column_options!(sql, options)
@@ -36,6 +35,16 @@ module ActiveRecord
       end
 
       module SchemaStatements
+        def data_source_sql(name = nil, type: nil)
+          # TODO implement
+          nil
+        end
+
+        def quoted_scope(name = nil, type: nil)
+          # TODO implement
+          nil
+        end
+
         def primary_key(table_name)
           res = @connection.execute("select constraint_name from information_schema.table_constraints
 where table_name = '#{quote_table_name(table_name)}' and constraint_type = 'PRIMARY_KEY'")

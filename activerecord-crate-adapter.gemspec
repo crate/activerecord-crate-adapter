@@ -26,10 +26,10 @@ require 'activerecord-crate-adapter/version'
 Gem::Specification.new do |spec|
   spec.name          = "activerecord-crate-adapter"
   spec.version       = ActiverecordCrateAdapter::VERSION
-  spec.authors       = ["Christoph Klocker", "CRATE Technology GmbH"]
+  spec.authors       = ["Christoph Klocker", "Crate.IO GmbH"]
   spec.email         = ["office@crate.io"]
-  spec.summary       = "ActiveRecord adapter for Crate"
-  spec.description   = "ActiveRecord adapter for Crate, the distributed database for Docker."
+  spec.summary       = "ActiveRecord adapter for CrateDB"
+  spec.description   = "ActiveRecord adapter for CrateDB, the distributed SQL database based on Lucene"
   spec.homepage      = "https://crate.io"
   spec.license       = "Apache License, v2.0"
 

@@ -37,5 +37,3 @@ module Arel
     end
   end
 end
-
-Arel::Visitors::VISITORS['crate'] = Arel::Visitors::Crate

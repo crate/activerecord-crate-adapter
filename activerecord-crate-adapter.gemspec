@@ -40,7 +40,7 @@ Gem::Specification.new do |spec|
 
   spec.metadata = {
     "bug_tracker_uri" => "https://github.com/crate/activerecord-crate-adapter/issues",
-    "changelog_uri"   => "https://github.com/crate/activerecord-crate-adapter/blob/master/history.txt",
+    "changelog_uri"   => "https://github.com/crate/activerecord-crate-adapter/blob/main/history.txt",
     "source_code_uri" => "https://github.com/crate/activerecord-crate-adapter"
   }
 

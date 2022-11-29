@@ -28,9 +28,9 @@ our CLA_. Once that is done, we suggest to continue as follows:
 
 - Add an issue on Github and let us know that you're working on something.
 
-- Use a feature branch, not master.
+- Use a feature branch, not ``main``.
 
-- Rebase your feature branch onto origin/master before raising the PR
+- Rebase your feature branch onto origin/main before raising the PR
 
 - Be descriptive in your PR and commit messages. What is it for, why is it
   needed, etc.
@@ -44,12 +44,12 @@ Rebase
 ------
 
 If while you've been working in the feature branch new commits were added to
-the master branch please don't merge them but use rebase::
+the ``main`` branch please don't merge them but use rebase::
 
     git fetch origin
-    git rebase origin/master
+    git rebase origin/main
 
-This will apply all commits on your feature branch on top of the master branch.
+This will apply all commits on your feature branch on top of the main branch.
 Any conflicts can be resolved just the same as if ``git merge`` was used. After
 the conflict has been resolved use ``git rebase --continue`` to continue the
 rebase process.
@@ -78,7 +78,7 @@ For example while working on a feature branch you'd use::
     git add .
     git commit --fixup $(git rev-parse HEAD)
 
-    git rebase -i origin/master
+    git rebase -i origin/main
 
 ``git commit --fixup`` will mark the commit as a fixup relating to the commit
 HEAD currently points to.

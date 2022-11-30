@@ -20,6 +20,8 @@
 # software solely pursuant to the terms of the relevant commercial agreement.
 
 class User < ActiveRecord::Base
+  self.primary_key = "id"
+
   before_create :set_id
 
   serialize :address, Address

@@ -69,10 +69,11 @@ end
 # Wait till all table is synced to all shards
 # this should be used after each create_table to prevent flaky tests
 def ensure_status(expected_status)
-  req = Net::HTTP::Get.new("/_cluster/health?wait_for_status=#{expected_status}&timeout=10s")
-  resp = Net::HTTP.new(HOST, PORT)
-  response = resp.start { |http| http.request(req) }
-  actual_status = JSON.parse(response.body)['status']
+  http = Net::HTTP.new(HOST, PORT)
+  request = Net::HTTP::Post.new('/_sql', {'Content-Type' =>'application/json'})
+  request.body = {"stmt": "SELECT DISTINCT health FROM sys.health"}.to_json
+  response = http.request(request)
+  actual_status = JSON.parse(response.body)['rows'].first.first
   raise WrongStatusError, "expected status #{expected_status}, got #{actual_status}" if actual_status != expected_status
 end
 

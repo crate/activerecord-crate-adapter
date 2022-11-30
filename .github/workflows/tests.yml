@@ -18,9 +18,14 @@ jobs:
   tests:
     runs-on: ${{ matrix.os }}
     strategy:
+
+      # Run all jobs to completion (false), or cancel
+      # all jobs once the first one fails (true).
+      fail-fast: false
+
       matrix:
         os: [ "ubuntu-latest" ]
-        ruby-version: [ "2.4" ]
+        ruby-version: [ "2.4", "2.5", "2.6" ]
 
     services:
       cratedb:

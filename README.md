@@ -1,5 +1,5 @@
 [![Gem Version](https://badge.fury.io/rb/activerecord-crate-adapter.svg)](http://badge.fury.io/rb/activerecord-crate-adapter)
-[![Build Status](https://travis-ci.org/crate/activerecord-crate-adapter.svg?branch=master)](https://travis-ci.org/crate/activerecord-crate-adapter)
+[![Build status](https://github.com/crate/activerecord-crate-adapter/actions/workflows/tests.yml/badge.svg)](https://github.com/crate/activerecord-crate-adapter/actions/workflows/tests.yml)
 [![Code Climate](https://codeclimate.com/github/crate/activerecord-crate-adapter.png)](https://codeclimate.com/github/crate/activerecord-crate-adapter)
 
 The [Crate](http://www.crate.io) adapter for ActiveRecord.

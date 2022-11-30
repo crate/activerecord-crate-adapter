@@ -131,7 +131,7 @@ module ActiveRecord
 
       def columns(table_name) #:nodoc:
         cols = @connection.table_structure(table_name).map do |field|
-          name = dotted_name(field[2])
+          name = dotted_name(field[12])
           CrateColumn.new(name, nil, field[4], nil)
         end
         cols

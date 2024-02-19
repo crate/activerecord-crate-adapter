@@ -45,7 +45,7 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
 
       - name: Caching of Ruby gems
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-gems
         with:
           path: vendor/bundle

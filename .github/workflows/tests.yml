@@ -25,7 +25,7 @@ jobs:
 
       matrix:
         os: [ "ubuntu-latest" ]
-        ruby-version: [ "2.4", "2.5", "2.6" ]
+        ruby-version: [ "2.7" ]
 
     services:
       cratedb:
@@ -54,7 +54,8 @@ jobs:
 
       - name: Bundle install
         run: |
-          gem install bundler
+          # Remove version constraint once upgrading ruby itself
+          gem install bundler -v 2.4.22
           bundle config path vendor/bundle
           bundle install
 

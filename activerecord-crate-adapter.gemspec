@@ -48,7 +48,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec", "~> 3.13"
 
-  spec.add_dependency('activerecord', '~> 4.1.0')
+  spec.add_dependency('activerecord', '>= 4.1', '< 7.2')
   spec.add_dependency('arel', '>= 5.0.0')
   spec.add_dependency('crate_ruby', '~> 0.2.0')
   # https://github.com/ruby/bigdecimal#which-version-should-you-select

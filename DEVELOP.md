@@ -10,7 +10,7 @@ docker run --rm -it --publish=44200:4200 crate:5.1.1 \
 Install project and invoke test suite.
 ```shell
 bundle install
-bundle exec rspec
+bundle exec rspec --backtrace
 ```
 
 

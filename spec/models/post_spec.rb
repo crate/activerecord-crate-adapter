@@ -116,7 +116,7 @@ describe Post do
   describe 'sql input sanitization' do
 
     before do
-      @post = Post.create!(params)
+      @post = Post.create!(**params)
     end
 
     after do

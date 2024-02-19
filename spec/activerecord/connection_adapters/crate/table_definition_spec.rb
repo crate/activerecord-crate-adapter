@@ -26,7 +26,7 @@ describe ActiveRecord::ConnectionAdapters::CrateAdapter::TableDefinition do
 
   describe '#object_schema_to_string' do
 
-    let(:td) { ActiveRecord::ConnectionAdapters::CrateAdapter::TableDefinition.new(nil, nil, nil, nil) }
+    let(:td) { ActiveRecord::ConnectionAdapters::CrateAdapter::TableDefinition.new(nil, nil) }
 
     it 'should simply set the key and values' do
       s = {street: :string, city: :string}

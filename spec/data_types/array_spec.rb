@@ -22,7 +22,6 @@
 require_relative '../spec_helper'
 
 describe "Post#array" do
-
   before(:all) do
     ActiveRecord::Migration.class_eval do
       create_table :posts do |t|
@@ -43,7 +42,6 @@ describe "Post#array" do
     end
   end
 
-
   describe "#array column type" do
     let(:array) { %w(hot fresh) }
     let(:votes) { [9, 8, 7] }
@@ -53,18 +51,18 @@ describe "Post#array" do
     context 'create' do
       it 'should store and return an array' do
         p = Post.find(post.id)
-        p.tags.should be_a Array
-        p.votes.should be_a Array
-        p.bool_arr.should be_a Array
-        p.tags.should eq array
-        p.votes.should eq votes
-        p.bool_arr.should eq bool_arr
+        expect(p.tags).to be_a(Array)
+        expect(p.votes).to be_a(Array)
+        expect(p.bool_arr).to be_a(Array)
+        expect(p.tags).to eq(array)
+        expect(p.votes).to eq(votes)
+        expect(p.bool_arr).to eq(bool_arr)
       end
 
       it 'should find the post by array value' do
         post = Post.create!(title: 'Arrays are awesome', tags: array, votes: votes)
         refresh_posts
-        Post.where("'fresh' = ANY (tags)").should include(post)
+        expect(Post.where("'fresh' = ANY (tags)")).to include(post)
       end
     end
 
@@ -76,10 +74,8 @@ describe "Post#array" do
         post.update_attributes!(tags: new_tags)
         refresh_posts
         post.reload
-        post.tags.should eq new_tags
+        expect(post.tags).to eq(new_tags)
       end
     end
-
   end
-
 end

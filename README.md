@@ -2,6 +2,9 @@
 [![Build status](https://github.com/crate/activerecord-crate-adapter/actions/workflows/tests.yml/badge.svg)](https://github.com/crate/activerecord-crate-adapter/actions/workflows/tests.yml)
 [![Code Climate](https://codeclimate.com/github/crate/activerecord-crate-adapter.png)](https://codeclimate.com/github/crate/activerecord-crate-adapter)
 
+## Archived project
+
+The CrateDB ActiveRecord adapter project has been archived and is not maintained.
 
 ## About
 

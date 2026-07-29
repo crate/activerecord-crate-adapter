@@ -24,6 +24,8 @@ class Post < ActiveRecord::Base
 
   before_create :set_id
 
+  attr_accessor :title, :views
+
   private
 
   def set_id

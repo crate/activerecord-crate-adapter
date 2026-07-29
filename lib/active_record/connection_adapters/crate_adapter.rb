@@ -23,7 +23,7 @@ require 'active_record'
 require 'active_record/base'
 require 'active_record/base'
 require 'arel/arel_crate'
-require 'arel/visitors/bind_visitor'
+require 'arel/visitors/visitor'
 require 'active_support/dependencies/autoload'
 require 'active_support/callbacks'
 require 'active_support/core_ext/string'
@@ -77,7 +77,7 @@ module ActiveRecord
       }
 
       class BindSubstitution < Arel::Visitors::Crate # :nodoc:
-        include Arel::Visitors::BindVisitor
+        include Arel::Visitors
       end
 
       def initialize(connection, logger, pool, config)

@@ -21,9 +21,8 @@
 
 require 'active_record'
 require 'active_record/base'
-require 'active_record/base'
 require 'arel/arel_crate'
-require 'arel/visitors/bind_visitor'
+require 'arel/visitors/visitor'
 require 'active_support/dependencies/autoload'
 require 'active_support/callbacks'
 require 'active_support/core_ext/string'
@@ -45,7 +44,7 @@ module ActiveRecord
   class Base
     def self.crate_connection(config) #:nodoc:
       config = config.symbolize_keys
-      ConnectionAdapters::CrateAdapter.new(nil, logger, nil, config)
+      ConnectionAdapters::CrateAdapter.new(nil, logger, config)
     end
   end
 
@@ -61,7 +60,7 @@ module ActiveRecord
       ADAPTER_NAME = 'Crate'.freeze
 
       def schema_creation # :nodoc:
-        Crate::SchemaCreation.new self
+         Crate::SchemaCreation.new self
       end
 
       NATIVE_DATABASE_TYPES = {
@@ -77,13 +76,13 @@ module ActiveRecord
       }
 
       class BindSubstitution < Arel::Visitors::Crate # :nodoc:
-        include Arel::Visitors::BindVisitor
+        include Arel::Visitors
       end
 
-      def initialize(connection, logger, pool, config)
+      def initialize(connection, logger, config)
         @port = config[:port]
         @host = config[:host]
-        super(connection, logger, pool)
+        super(connection, logger, config)
         @schema_cache = SchemaCache.new self
         @visitor = Arel::Visitors::Crate.new self
         @quoted_column_names = {}
@@ -125,12 +124,25 @@ module ActiveRecord
         true
       end
 
+      def supports_datetime_with_precision?
+        true
+      end
+
       def connect
         @connection = CrateRuby::Client.new(["#{@host}:#{@port}"])
+
+        # Monkeypatch to make the client instance provide `supports_datetime_with_precision`.
+        # FIXME: Implement within `CrateRuby::Client`?
+        @adapter_supports_datetime_with_precision = supports_datetime_with_precision?
+        def @connection.supports_datetime_with_precision?
+          return @adapter_supports_datetime_with_precision
+        end
+
       end
 
       def columns(table_name) #:nodoc:
         cols = @connection.table_structure(table_name).map do |field|
+          # TODO: Review. What if the table structure changes again?
           name = dotted_name(field[12])
           CrateColumn.new(name, nil, field[4], nil)
         end
@@ -172,10 +184,10 @@ module ActiveRecord
         # +SecureRandom.uuid+ method and a +before_save+ callback, for instance.
         def primary_key(name, type = :primary_key, options = {})
           options[:primary_key] = true
-          column name, "STRING PRIMARY KEY", options
+          column name, "STRING PRIMARY KEY"
         end
 
-        def column(name, type = nil, options = {})
+        def column(name, type = nil, **options)
           super
           column = self[name]
           column.array = options[:array]
@@ -189,19 +201,19 @@ module ActiveRecord
           schema = options.delete(:object_schema)
           type = "#{type} as (#{object_schema_to_string(schema)})" if schema
 
-          column name, type, options.merge(object: true)
+          column name, type, **options.merge(object: true)
         end
 
         def array(name, options = {})
           array_type = options.delete(:array_type)
           raise "Array columns must specify an :array_type (e.g. array_type: :string)" unless array_type.present?
-          column name, "array(#{array_type})", options.merge(array: true)
+          column name, "array(#{array_type})", **options.merge(array: true)
         end
 
         private
 
-        def create_column_definition(name, type)
-          ColumnDefinition.new name, type
+        def create_column_definition(name, type, options)
+          ColumnDefinition.new(name, type, options)
         end
 
         def object_schema_to_string(s)
@@ -220,8 +232,8 @@ module ActiveRecord
 
       end
 
-      def create_table_definition(name, temporary, options, as = nil)
-        TableDefinition.new native_database_types, name, temporary, options, as
+      def create_table_definition(name)
+        TableDefinition.new @connection, name
       end
 
       def native_database_types
